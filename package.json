@@ -1,0 +1,14 @@
+{
+  "name": "itube",
+  "version": "1.0.0",
+  "description": "Cloning Youtube with Vanilla and NodeJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Danah Kim",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
