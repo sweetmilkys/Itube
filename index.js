@@ -1,6 +1,10 @@
 // Find express folder in my node_modules folder and
 import express from "express";
-// express = require('express')
+import morgan from "morgan";
+import helmet from "helmet";
+import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
+
 const app = express();
 
 const PORT = 4000;
@@ -12,22 +16,14 @@ const handleHome = (req, res) => res.send("hello world");
 
 const handleProfile = (req, res) => res.send("You are on my profile");
 
-// middleware
-const betweenHome = (req, res, next) => {
-  console.log("Bettween");
-  next();
-};
+app.use(cookieParser()); // cookies middleware
+app.use(bodyParser().json()); // body middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(helmet()); // secure middleware
+app.use(morgan("dev")); // logger middleware
 
-/* Global middleware
-   router 위에 위치한 middleware의 경우 모든 페이지 이동시 작동 */
-app.use(betweenHome);
-
-// respond with "hello world" when a GET request is made to the homepage
-app.get("/", handleHome);
-/* local middleware
-    app.get("/", betweenHome, handleHome) */
+app.get("/", middleware, handleHome); // respond with "hello world" when a GET request is made to the homepage
 
 app.get("/profile", handleProfile);
 
-// set port
-app.listen(PORT, handleListening);
+app.listen(PORT, handleListening); // set port
