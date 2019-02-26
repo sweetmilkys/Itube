@@ -10,11 +10,11 @@ import router from "./router";
 
 const app = express();
 
-app.use(cookieParser()); // cookies middleware
-app.use(bodyParser.json()); // body middleware
+app.use(cookieParser()); // Get cookie and can make to use
+app.use(bodyParser.json()); // Checking what contents(JSON TYPE) is user seding to website
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(helmet()); // secure middleware
-app.use(morgan("dev")); // logger middleware
+app.use(helmet()); // secure
+app.use(morgan("dev")); // logger all happen
 
 app.use(router.home, globalRouter);
 app.use(router.users, userRouter);
