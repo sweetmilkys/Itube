@@ -10,6 +10,7 @@ import router from "./router";
 
 const app = express();
 
+app.set("view engine", "pug");
 app.use(cookieParser()); // Get cookie and can make to use
 app.use(bodyParser.json()); // Checking what contents(JSON TYPE) is user seding to website
 app.use(bodyParser.urlencoded({ extended: true }));
