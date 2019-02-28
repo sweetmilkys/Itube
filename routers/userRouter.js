@@ -1,5 +1,5 @@
 import express from "express";
-import router from "../router";
+import routers from "../routers";
 import {
   users,
   userDetail,
@@ -9,9 +9,8 @@ import {
 
 const userRouter = express.Router();
 
-userRouter.get(router.users, users);
-userRouter.get(router.userDetail, userDetail);
-userRouter.get(router.editProfile, editProfile);
-userRouter.get(router.changePassword, changePassword);
+userRouter.get(routers.userDetail, userDetail);
+userRouter.get(routers.editProfile, editProfile);
+userRouter.get(routers.changePassword, changePassword);
 
 export default userRouter;
