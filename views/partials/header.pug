@@ -3,6 +3,9 @@ header.header
     a(href=routers.home)
         i.fab.fa-youtube
     .header__column
+        form(action=routers.serach, method="get")
+            input(type="text", placehoder="Serach by term..", name="term")
+    .header__column
         ul
             li
                 a(href=routers.join) Join
