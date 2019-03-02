@@ -7,7 +7,15 @@ header.header
             input(type="text", placehoder="Serach by term..", name="term")
     .header__column
         ul
-            li
-                a(href=routers.join) Join
-            li
-                a(href=routers.login) Log In
+            if !user.isAuthenticated
+                li
+                    a(href=routers.join) Join
+                li
+                    a(href=routers.login) Log In
+            else
+                li
+                    a(href=routers.upload) Upload
+                li
+                    a(href=routers.userDetail(user.id)) Profile
+                li
+                    a(href=routers.logout) Log Out

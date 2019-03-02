@@ -1,7 +1,6 @@
 import express from "express";
 import routers from "../routers";
 import {
-  videos,
   videoDetail,
   editVideo,
   deleteVideo,

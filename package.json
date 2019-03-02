@@ -1,13 +1,11 @@
 {
-  "name": "WeTube",
+  "name": "wetube",
   "version": "1.0.0",
   "description": "Cloning Youtube with Vanilla and NodeJS",
-  "main": "index.js",
+  "author": "Danah Kim",
   "scripts": {
     "start": "nodemon --exec babel-node init.js --delay 2"
   },
-  "author": "Danah Kim",
-  "license": "ISC",
   "dependencies": {
     "@babel/core": "^7.3.3",
     "@babel/node": "^7.2.2",
@@ -20,6 +18,12 @@
     "pug": "^2.0.3"
   },
   "devDependencies": {
-    "nodemon": "^1.18.10"
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "nodemon": "^1.18.10",
+    "prettier": "^1.15.2"
   }
 }
