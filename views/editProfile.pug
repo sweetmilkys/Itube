@@ -8,4 +8,4 @@ block content
             input(type="text", name="name", placeholder="Name")
             input(type="email", name="email", placeholder="email")
             input(type="submit", value="Update Profile")
-        a.form-fontainer__link(href=routers.changePassword) Change Password
+        a.form-fontainer__link(href=routers.changePassword(user.id)) Change Password

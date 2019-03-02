@@ -8,11 +8,11 @@ const SEARCH = "/search";
 // User
 const USERS = "/users";
 const USER_DETAIL = "/:id";
-const EDIT_PROFILE = "/edit-profile";
-const CHANGE_PASSWORD = "/change-password";
+const EDIT_PROFILE = "/:id/edit-profile";
+const CHANGE_PASSWORD = "/:id/change-password";
 
 // Videos
-const VIDEOS = "/vidoes";
+const VIDEOS = "/videos";
 const UPLOAD = "/upload";
 const VIDEO_DETAIL = "/:id";
 const EDIT_VIDEO = "/:id/edit";
@@ -32,8 +32,20 @@ const routers = {
       return USER_DETAIL;
     }
   },
-  editProfile: EDIT_PROFILE,
-  changePassword: CHANGE_PASSWORD,
+  editProfile: id => {
+    if(id) {
+      return `/users/${id}/edit-profile`;
+    } else {
+      return EDIT_PROFILE;
+    }
+  },
+  changePassword: id => {
+    if(id) {
+      return `/users/${id}/change-password`;
+    } else {
+      return CHANGE_PASSWORD;
+    }
+  },
   videos: VIDEOS,
   upload: UPLOAD,
   videoDetail: id => {
