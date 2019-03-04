@@ -33,15 +33,49 @@ export const postUpload = async(req, res) => {
     title,
     description
   });
-  console.log(newVideo);
   res.redirect(routers.videoDetail(newVideo.id));
 }
 
-export const videoDetail = (req, res) =>
-  res.render("videoDetail", { pageTitle: "Video Detail" });
+export const videoDetail = async(req, res) => {
+  //console.log(req.params);
+  const {
+    params: { id }
+  } = req;
+  try{
+    const video = await Video.findById(id);
+    res.render("videoDetail", { pageTitle: "Video Detail", video });
+  } catch(error) {
+    console.log(error);
+    res.redirect(routers.home);
+  }
+};
 
-export const editVideo = (req, res) =>
-  res.render("editVideo", { pageTitle: "Edit Video" });
+export const getEditVideo = async(req, res) => {
+  const {
+    params: { id }
+  } = req;
+  try {
+    const video = await Video.findById(id);
+    res.render("editVideo", { pageTitle: `Edit ${video.title}`, video });
+  } catch (error) {
+    console.log(error);
+    res.redirect(routers.home);
+  }
+};
+
+  export const postEditVideo = async(req, res) => {
+    const {
+      params: { id },
+      body: { title, description }
+    } = req;
+    try {
+      await Video.findByIdAndUpdate({ _id: id }, { title, description });
+      res.redirect(routers.videoDetail(id));
+    } catch (error) {
+      console.log(error);
+      res.redirect(routers.home);
+    }
+  };
 
 export const deleteVideo = (req, res) =>
   res.render("deleteVideo", { pageTitle: "Delete Video" });
