@@ -26,49 +26,42 @@ const routers = {
   search: SEARCH,
   users: USERS,
   userDetail: id => {
-    if(id) {
+    if (id) {
       return `/users/${id}`;
-    } else {
-      return USER_DETAIL;
     }
+    return USER_DETAIL;
   },
   editProfile: id => {
-    if(id) {
+    if (id) {
       return `/users/${id}/edit-profile`;
-    } else {
-      return EDIT_PROFILE;
     }
+    return EDIT_PROFILE;
   },
   changePassword: id => {
-    if(id) {
+    if (id) {
       return `/users/${id}/change-password`;
-    } else {
-      return CHANGE_PASSWORD;
     }
+    return CHANGE_PASSWORD;
   },
   videos: VIDEOS,
   upload: UPLOAD,
   videoDetail: id => {
-    if(id) {
+    if (id) {
       return `/videos/${id}`;
     }
-    else {
-      return VIDEO_DETAIL; 
-    }
+    return VIDEO_DETAIL;
   },
   editVideo: id => {
-    if(id) {
+    if (id) {
       return `/videos/${id}/edit`;
-    } else {
-      return EDIT_VIDEO;
     }
+    return EDIT_VIDEO;
   },
   deleteVideo: id => {
-    if(id) {
+    if (id) {
       return `/videos/${id}/delete`;
-    } else {
-      return DELETE_VIDEO;
     }
+    return DELETE_VIDEO;
   }
 };
 

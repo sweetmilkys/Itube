@@ -6,7 +6,7 @@ import {
   videoDetail,
   getEditVideo,
   postEditVideo,
-  deleteVideo  
+  deleteVideo
 } from "../controllers/videoController";
 import { uploadVideo } from "../middlewares";
 
