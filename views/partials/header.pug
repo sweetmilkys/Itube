@@ -1,21 +1,22 @@
 header.header
-    .header__column
-    a(href=routers.home)
-        i.fab.fa-youtube
-    .header__column
-        form(action=routers.search, method="get")
-            input(type="text", placehoder="Serach by term..", name="term")
-    .header__column
-        ul
-            if !user.isAuthenticated
-                li
-                    a(href=routers.join) Join
-                li
-                    a(href=routers.login) Log In
-            else
-                li
-                    a(href=`/videos${routers.upload}`) Upload
-                li
-                    a(href=routers.userDetail(user.id)) Profile
-                li
-                    a(href=routers.logout) Log Out
+    .header__wrapper
+        .header__column
+            a(href=routers.home)
+                i.fab.fa-youtube
+        .header__column
+            form(action=routers.search, method="get")
+                input(type="text", placeholder="Search by term...", name="term")
+        .header__column
+            ul
+                if !user.isAuthenticated
+                    li
+                        a(href=routers.join) Join
+                    li
+                        a(href=routers.login) Log In
+                else 
+                    li
+                        a(href=`/videos${routers.upload}`) Upload
+                    li
+                        a(href=routers.userDetail(user.id)) Profile
+                    li
+                        a(href=routers.logout) Log Out

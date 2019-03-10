@@ -3,9 +3,11 @@ extends layouts/main
 block content
     .form-container
         form(action=`/users${routers.editProfile}`, method="post")
-            label(for="avatar") Avatar
-            input(type="file" name="avatar", placeholder="Avatar")
-            input(type="text", name="name", placeholder="Name")
-            input(type="email", name="email", placeholder="email")
+            .fileUpload
+                label(for="avatar") Avatar
+                input(type="file", id="avatar", name="avatar")
+            input(type="text", placeholder="Name", name="name")
+            input(type="email", placeholder="Email", name="email")
             input(type="submit", value="Update Profile")
-        a.form-fontainer__link(href=routers.changePassword(user.id)) Change Password
+        a.form-container__link(href=`/users${routers.changePassword}`)
+            button Change Password
