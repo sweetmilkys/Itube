@@ -4,7 +4,9 @@ import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import passport from "passport";
+import mongoes from "mongoose";
 import session from "express-session";
+import mongoStore from "connect-mongo";
 import { localsMiddleware } from "./middlewares";
 import routers from "./routers";
 import globalRouter from "./routers/globalRouter";
@@ -14,6 +16,8 @@ import videoRouter from "./routers/videoRouter";
 import "./passport";
 
 const app = express();
+
+const CokieStore = mongoStore(session);
 
 app.use(helmet()); // secure
 app.set("view engine", "pug");
@@ -27,7 +31,8 @@ app.use(
   session({
     secret: process.env.COOKIE_SECRET,
     resave: true,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store: new CokieStore({ mongooseConnection: mongoes.connection })
   })
 );
 // https://randomkeygen.com/
