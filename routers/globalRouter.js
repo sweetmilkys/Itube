@@ -10,6 +10,9 @@ import {
   githubLogin,
   githubCallback,
   githubPostLogin,
+  facebookLogin,
+  facebookCallback,
+  facebookPostLogin,
   getMe
 } from "../controllers/userController";
 import { onlyPublic, onlyPrivate } from "../middlewares";
@@ -26,9 +29,11 @@ globalRouter.get(routers.home, home);
 globalRouter.get(routers.search, search);
 globalRouter.get(routers.logout, onlyPrivate, logout);
 
-globalRouter.get(routers.gitHub, githubLogin);
+globalRouter.get(routers.github, githubLogin);
+globalRouter.get(routers.githubCallback, githubCallback, githubPostLogin);
 
-globalRouter.get(routers.gitHubCallback, githubCallback, githubPostLogin);
+globalRouter.get(routers.facebook, facebookLogin);
+globalRouter.get(routers.facebookCallback, facebookCallback, facebookPostLogin);
 
 globalRouter.get(routers.me, getMe);
 
