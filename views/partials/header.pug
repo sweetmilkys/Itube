@@ -8,7 +8,7 @@ header.header
                 input(type="text", placeholder="Search by term...", name="term")
         .header__column
             ul
-                if !user
+                if !loggedUser
                     li
                         a(href=routers.join) Join
                     li
@@ -17,6 +17,6 @@ header.header
                     li
                         a(href=`/videos${routers.upload}`) Upload
                     li
-                        a(href=routers.userDetail(user.id)) Profile
+                        a(href=routers.me) Profile
                     li
                         a(href=routers.logout) Log Out

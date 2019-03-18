@@ -1,6 +1,7 @@
 extends layouts/main
 
 block content
-    p User Datail
-    .form-container
-        a.form-fontainer__link(href=routers.editProfile(user.id)) Edit Profile
+    .user-profile
+        .user-profile__header
+            img.avatar(src=user.avatarUrl)
+            h4.profile__username=user.name
