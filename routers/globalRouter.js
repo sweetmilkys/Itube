@@ -13,7 +13,10 @@ import {
   facebookLogin,
   facebookCallback,
   facebookPostLogin,
-  getMe
+  getMe,
+  kakaoLogin,
+  kakoCallback,
+  kakoPostLogin
 } from "../controllers/userController";
 import { onlyPublic, onlyPrivate } from "../middlewares";
 
@@ -34,6 +37,9 @@ globalRouter.get(routers.githubCallback, githubCallback, githubPostLogin);
 
 globalRouter.get(routers.facebook, facebookLogin);
 globalRouter.get(routers.facebookCallback, facebookCallback, facebookPostLogin);
+
+globalRouter.get(routers.kakao, kakaoLogin);
+globalRouter.get(routers.kakaoCallback, kakoCallback, kakoPostLogin);
 
 globalRouter.get(routers.me, getMe);
 
