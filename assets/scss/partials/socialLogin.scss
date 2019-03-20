@@ -17,12 +17,8 @@
       font-size: 20px;
     }
   }
-  .social-login--github {
-    background-color: $black;
-    color: white;
-  }
-  .social-login--facebook {
-    background-color: #3a5998;
+  .social-login--google {
+    background-color: #d93025;
     color: white;
   }
   .social-login--kakao {
@@ -35,5 +31,13 @@
     i {
       font-weight: bolder;
     }
+  }
+  .social-login--facebook {
+    background-color: #3a5998;
+    color: white;
+  }
+  .social-login--github {
+    background-color: $black;
+    color: white;
   }
 }

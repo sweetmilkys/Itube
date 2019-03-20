@@ -18,14 +18,9 @@ const UPLOAD = "/upload";
 const VIDEO_DETAIL = "/:id";
 const EDIT_VIDEO = "/:id/edit";
 const DELETE_VIDEO = "/:id/delete";
-
-// Github
-const GITHUB = "/auth/github";
-const GITHUB_CALLBACK = "/auth/github/callback";
-
-// Facebook
-const FACEBOOK = "/auth/facebook";
-const FACEBOOK_CALLBACK = "/auth/facebook/callback";
+// Google
+const GOOGLE = "/auth/google";
+const GOOGLE_CALLBACK = "/auth/google/callback";
 
 // Kakao
 const KAKAO = "/auth/kakao";
@@ -34,6 +29,14 @@ const KAKAO_CALLBACK = "/auth/kakao/callback";
 // Naver
 const NAVER = "/auth/naver";
 const NAVER_CALLBACK = "/auth/naver/callback";
+
+// Facebook
+const FACEBOOK = "/auth/facebook";
+const FACEBOOK_CALLBACK = "/auth/facebook/callback";
+
+// Github
+const GITHUB = "/auth/github";
+const GITHUB_CALLBACK = "/auth/github/callback";
 
 const routers = {
   home: HOME,
@@ -80,14 +83,16 @@ const routers = {
     }
     return DELETE_VIDEO;
   },
-  github: GITHUB,
-  githubCallback: GITHUB_CALLBACK,
-  facebook: FACEBOOK,
-  facebookCallback: FACEBOOK_CALLBACK,
+  google: GOOGLE,
+  googleCallback: GOOGLE_CALLBACK,
   kakao: KAKAO,
   kakaoCallback: KAKAO_CALLBACK,
   naver: NAVER,
-  naverCallbak: NAVER_CALLBACK,
+  naverCallback: NAVER_CALLBACK,
+  facebook: FACEBOOK,
+  facebookCallback: FACEBOOK_CALLBACK,
+  github: GITHUB,
+  githubCallback: GITHUB_CALLBACK,
   me: ME
 };
 

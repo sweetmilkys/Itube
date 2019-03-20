@@ -33,74 +33,37 @@ export const postLogin = passport.authenticate("local", {
   successRedirect: routers.home
 });
 
-export const githubLoginCallback = async (_, __, profile, done) => {
+export const googleLoginCallback = async (_, __, ___, profile, done) => {
   const {
-    _json: { id, name, email, avatar_url: avatarUrl }
+    _json: { sub: id, name, email, picture: avatarUrl }
   } = profile;
   try {
     const user = await User.findOne({ email });
     if (user) {
-      user.githubId = id;
+      user.googleId = id;
+      if (user.avatarUrl == null) user.avatarUrl = avatarUrl;
       user.save();
       return done(null, user);
     }
     const newUser = await User.create({
-      name,
       email,
-      avatarUrl,
-      githubId: id
+      name,
+      googleId: id,
+      avatarUrl
     });
     return done(null, newUser);
   } catch (error) {
-    console.log(error);
     return done(error);
   }
 };
 
-export const githubLogin = passport.authenticate("github", {
-  scope: ["user:email"]
+export const googleLogin = passport.authenticate("google", {
+  scope: ["email", "profile"]
 });
 
-export const githubCallback = passport.authenticate("github", {
+export const googleCallback = passport.authenticate("google", {
   failureRedirect: routers.login
 });
-
-export const githubPostLogin = (req, res) => res.redirect(routers.home);
-
-export const facebookLoginCallback = async (_, __, profile, cb) => {
-  const {
-    _json: { id, name, email }
-  } = profile;
-  try {
-    const user = await User.findOne({ email });
-    if (user) {
-      user.facebookId = id;
-      if (user.avatarUrl == null)
-        user.avatarUrl = `https://graph.facebook.com/${id}/picture?type=large`;
-      user.save();
-      return cb(null, user);
-    }
-    const newUser = await User.create({
-      email,
-      name,
-      facebookId: id,
-      avatarUrl: `https://graph.facebook.com/${id}/picture?type=large`
-    });
-    return cb(null, newUser);
-  } catch (error) {
-    return cb(error);
-  }
-};
-
-export const facebookLogin = passport.authenticate("facebook");
-
-export const facebookCallback = passport.authenticate("facebook", {
-  failureRedirect: routers.login
-});
-
-export const facebookPostLogin = (req, res) => {
-  res.redirect(routers.home);
-};
 
 export const kakaoLoginCallback = async (_, __, profile, done) => {
   const {
@@ -135,8 +98,6 @@ export const kakoCallback = passport.authenticate("kakao", {
   failureRedirect: routers.login
 });
 
-export const kakoPostLogin = (req, res) => res.redirect(routers.home);
-
 export const naverLoginCallback = async (_, __, profile, done) => {
   const {
     _json: { id, nickname: name, email, profile_image: avatarUrl }
@@ -167,7 +128,69 @@ export const naverCallback = passport.authenticate("naver", {
   failureRedirect: routers.login
 });
 
-export const naverPostLogin = (req, res) => res.redirect(routers.home);
+export const facebookLoginCallback = async (_, __, profile, cb) => {
+  const {
+    _json: { id, name, email }
+  } = profile;
+  try {
+    const user = await User.findOne({ email });
+    if (user) {
+      user.facebookId = id;
+      if (user.avatarUrl == null)
+        user.avatarUrl = `https://graph.facebook.com/${id}/picture?type=large`;
+      user.save();
+      return cb(null, user);
+    }
+    const newUser = await User.create({
+      email,
+      name,
+      facebookId: id,
+      avatarUrl: `https://graph.facebook.com/${id}/picture?type=large`
+    });
+    return cb(null, newUser);
+  } catch (error) {
+    return cb(error);
+  }
+};
+
+export const facebookLogin = passport.authenticate("facebook");
+
+export const facebookCallback = passport.authenticate("facebook", {
+  failureRedirect: routers.login
+});
+
+export const githubLoginCallback = async (_, __, profile, done) => {
+  const {
+    _json: { id, name, email, avatar_url: avatarUrl }
+  } = profile;
+  try {
+    const user = await User.findOne({ email });
+    if (user) {
+      user.githubId = id;
+      user.save();
+      return done(null, user);
+    }
+    const newUser = await User.create({
+      name,
+      email,
+      avatarUrl,
+      githubId: id
+    });
+    return done(null, newUser);
+  } catch (error) {
+    console.log(error);
+    return done(error);
+  }
+};
+
+export const githubLogin = passport.authenticate("github", {
+  scope: ["user:email"]
+});
+
+export const githubCallback = passport.authenticate("github", {
+  failureRedirect: routers.login
+});
+export const socialPostLogin = (req, res) => res.redirect(routers.home);
 
 export const getMe = (req, res) =>
   res.render("userDetail", { pageTitle: "User Detail", user: req.user });

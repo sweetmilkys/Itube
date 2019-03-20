@@ -409,11 +409,8 @@ input[type="submit"] {
     .social-login button span {
       margin-right: 10px;
       font-size: 20px; }
-  .social-login .social-login--github {
-    background-color: #444444;
-    color: white; }
-  .social-login .social-login--facebook {
-    background-color: #3a5998;
+  .social-login .social-login--google {
+    background-color: #d93025;
     color: white; }
   .social-login .social-login--kakao {
     background-color: #f4d400;
@@ -423,6 +420,12 @@ input[type="submit"] {
     color: white; }
     .social-login .social-login--naver i {
       font-weight: bolder; }
+  .social-login .social-login--facebook {
+    background-color: #3a5998;
+    color: white; }
+  .social-login .social-login--github {
+    background-color: #444444;
+    color: white; }
 
 .videoBlock video {
   margin-bottom: 10px;
