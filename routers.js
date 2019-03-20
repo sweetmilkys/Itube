@@ -31,6 +31,10 @@ const FACEBOOK_CALLBACK = "/auth/facebook/callback";
 const KAKAO = "/auth/kakao";
 const KAKAO_CALLBACK = "/auth/kakao/callback";
 
+// Naver
+const NAVER = "/auth/naver";
+const NAVER_CALLBACK = "/auth/naver/callback";
+
 const routers = {
   home: HOME,
   join: JOIN,
@@ -82,6 +86,8 @@ const routers = {
   facebookCallback: FACEBOOK_CALLBACK,
   kakao: KAKAO,
   kakaoCallback: KAKAO_CALLBACK,
+  naver: NAVER,
+  naverCallbak: NAVER_CALLBACK,
   me: ME
 };
 

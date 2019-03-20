@@ -2,11 +2,13 @@ import passport from "passport";
 import GithubStrategy from "passport-github2";
 import FacebookStrategy from "passport-facebook";
 import KakaoStrategy from "passport-kakao";
+import NaverStrategy from "passport-naver";
 import User from "./models/User";
 import {
   githubLoginCallback,
   facebookLoginCallback,
-  kakaoLoginCallback
+  kakaoLoginCallback,
+  naverLoginCallback
 } from "./controllers/userController";
 import routers from "./routers";
 
@@ -46,6 +48,17 @@ passport.use(
       callbackURL: `http://localhost:4000${routers.kakaoCallback}`
     },
     kakaoLoginCallback
+  )
+);
+
+passport.use(
+  new NaverStrategy(
+    {
+      clientID: process.env.NAVER_CLIENT_ID,
+      clientSecret: process.env.NAVER_CLIENT_SECRET,
+      callbackURL: `http://localhost:4000${routers.naverCallbak}`
+    },
+    naverLoginCallback
   )
 );
 

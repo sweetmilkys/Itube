@@ -7,7 +7,8 @@ const UserShecema = new mongoose.Schema({
   avatarUrl: String,
   facebookId: Number,
   githubId: Number,
-  kakaoId: Number
+  kakaoId: Number,
+  naverId: Number
 });
 
 UserShecema.plugin(passportLocalMongoose, { usernameField: "email" });

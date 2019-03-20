@@ -25,9 +25,15 @@
     background-color: #3a5998;
     color: white;
   }
-
   .social-login--kakao {
     background-color: #f4d400;
     color: white;
+  }
+  .social-login--naver {
+    background-color: #00ab33;
+    color: white;
+    i {
+      font-weight: bolder;
+    }
   }
 }
