@@ -38,10 +38,10 @@ export const googleLoginCallback = async (_, __, ___, profile, done) => {
     _json: { sub: id, name, email, picture: avatarUrl }
   } = profile;
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ $or: [{ email }, { googleId: id }] });
     if (user) {
       user.googleId = id;
-      if (user.avatarUrl == null) user.avatarUrl = avatarUrl;
+      user.avatarUrl = user.avatarUrl ? user.avatarUrl : avatarUrl;
       user.save();
       return done(null, user);
     }
@@ -53,6 +53,7 @@ export const googleLoginCallback = async (_, __, ___, profile, done) => {
     });
     return done(null, newUser);
   } catch (error) {
+    console.log(error);
     return done(error);
   }
 };
@@ -67,16 +68,17 @@ export const googleCallback = passport.authenticate("google", {
 
 export const kakaoLoginCallback = async (_, __, profile, done) => {
   const {
-    _json: { id, kaccount_email: email }
+    _json: {
+      id,
+      kaccount_email: email,
+      properties: { nickname: name, profile_image: avatarUrl }
+    }
   } = profile;
-  const {
-    properties: { nickname: name, profile_image: avatarUrl }
-  } = profile._json;
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ $or: [{ email }, { kakaoId: id }] });
     if (user) {
       user.kakoId = id;
-      if (user.avatarUrl == null) user.avatarUrl = avatarUrl;
+      user.avatarUrl = user.avatarUrl ? user.avatarUrl : avatarUrl;
       user.save();
       return done(null, user);
     }
@@ -88,6 +90,7 @@ export const kakaoLoginCallback = async (_, __, profile, done) => {
     });
     return done(null, newUser);
   } catch (error) {
+    console.log(error);
     return done(error);
   }
 };
@@ -103,10 +106,10 @@ export const naverLoginCallback = async (_, __, profile, done) => {
     _json: { id, nickname: name, email, profile_image: avatarUrl }
   } = profile;
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ $or: [{ email }, { naverId: id }] });
     if (user) {
       user.naverId = id;
-      if (user.avatarUrl == null) user.avatarUrl = avatarUrl;
+      user.avatarUrl = user.avatarUrl ? user.avatarUrl : avatarUrl;
       user.save();
       return done(null, user);
     }
@@ -118,6 +121,7 @@ export const naverLoginCallback = async (_, __, profile, done) => {
     });
     return done(null, newUser);
   } catch (error) {
+    console.log(error);
     return done(error);
   }
 };
@@ -133,11 +137,12 @@ export const facebookLoginCallback = async (_, __, profile, cb) => {
     _json: { id, name, email }
   } = profile;
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ $or: [{ email }, { facebookId: id }] });
     if (user) {
       user.facebookId = id;
-      if (user.avatarUrl == null)
-        user.avatarUrl = `https://graph.facebook.com/${id}/picture?type=large`;
+      user.avatarUrl = user.avatarUrl
+        ? user.avatarUrl
+        : `https://graph.facebook.com/${id}/picture?type=large`;
       user.save();
       return cb(null, user);
     }
@@ -149,6 +154,7 @@ export const facebookLoginCallback = async (_, __, profile, cb) => {
     });
     return cb(null, newUser);
   } catch (error) {
+    console.log(error);
     return cb(error);
   }
 };
@@ -164,9 +170,10 @@ export const githubLoginCallback = async (_, __, profile, done) => {
     _json: { id, name, email, avatar_url: avatarUrl }
   } = profile;
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ $or: [{ email }, { githubId: id }] });
     if (user) {
       user.githubId = id;
+      user.avatarUrl = user.avatarUrl ? user.avatarUrl : avatarUrl;
       user.save();
       return done(null, user);
     }
@@ -192,8 +199,9 @@ export const githubCallback = passport.authenticate("github", {
 });
 export const socialPostLogin = (req, res) => res.redirect(routers.home);
 
-export const getMe = (req, res) =>
+export const getMe = (req, res) => {
   res.render("userDetail", { pageTitle: "User Detail", user: req.user });
+};
 
 export const userDetail = async (req, res) => {
   const {
@@ -203,12 +211,32 @@ export const userDetail = async (req, res) => {
     const user = await User.findById(id);
     res.render("userDetail", { pageTitle: "User Detail", user });
   } catch (error) {
+    console.log(error);
     res.redirect(routers.home);
   }
 };
 
-export const editProfile = (req, res) =>
+export const getEditProfile = (req, res) => {
   res.render("editProfile", { pageTitle: "Edit Profile" });
+};
+
+export const postEditProfile = async (req, res) => {
+  const {
+    body: { name, email },
+    file
+  } = req;
+  try {
+    await User.findByIdAndUpdate(req.user.id, {
+      name,
+      email,
+      avatarUrl: file ? file.path : req.user.avatarUrl
+    });
+    res.redirect(routers.me);
+  } catch (error) {
+    console.log(error);
+    res.render("editProfile", { pageTitle: "Edit Profile" });
+  }
+};
 
 export const changePassword = (req, res) =>
   res.render("changePassword", { pageTitle: "Change Password" });

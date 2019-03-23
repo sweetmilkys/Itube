@@ -44,7 +44,7 @@ passport.use(
     {
       clientID: process.env.NAVER_CLIENT_ID,
       clientSecret: process.env.NAVER_CLIENT_SECRET,
-      callbackURL: `http://localhost:4000${routers.naverCallbak}`
+      callbackURL: `http://localhost:4000${routers.naverCallback}`
     },
     naverLoginCallback
   )

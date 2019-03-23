@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import passportLocalMongoose from "passport-local-mongoose";
 
-const UserShecema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
   name: String,
   email: String,
   avatarUrl: String,
@@ -12,8 +12,14 @@ const UserShecema = new mongoose.Schema({
   githubId: Number
 });
 
-UserShecema.plugin(passportLocalMongoose, { usernameField: "email" });
+UserSchema.plugin(passportLocalMongoose, { usernameField: "email" });
 
-const model = mongoose.model("User", UserShecema);
+UserSchema.statics.serializeUser = () => (user, cb) => cb(null, user.id);
+
+UserSchema.statics.deserializeUser = function() {
+  return (id, cb) => this.findById(id, cb);
+};
+
+const model = mongoose.model("User", UserSchema);
 
 export default model;
