@@ -234,12 +234,31 @@ export const postEditProfile = async (req, res) => {
     res.redirect(routers.me);
   } catch (error) {
     console.log(error);
-    res.render("editProfile", { pageTitle: "Edit Profile" });
+    res.redirect(routers.editProfile);
   }
 };
 
-export const changePassword = (req, res) =>
+export const getChangePassword = (req, res) =>
   res.render("changePassword", { pageTitle: "Change Password" });
+
+export const postChangePassword = async (req, res) => {
+  const {
+    body: { oldPassword, newPassword, newPassword1 }
+  } = req;
+  try {
+    if (newPassword !== newPassword1) {
+      res.status(400);
+      res.redirect(`/users/${routers.changePassword}`);
+      return;
+    }
+    await req.user.changePassword(oldPassword, newPassword);
+    res.redirect(routers.me);
+  } catch (error) {
+    console.log(error);
+    res.status(400);
+    res.redirect(`/users/${routers.changePassword}`);
+  }
+};
 
 export const logout = (req, res) => {
   req.logout();

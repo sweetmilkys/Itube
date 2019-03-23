@@ -2,9 +2,10 @@ import express from "express";
 import routers from "../routers";
 import {
   userDetail,
-  changePassword,
   getEditProfile,
-  postEditProfile
+  postEditProfile,
+  getChangePassword,
+  postChangePassword
 } from "../controllers/userController";
 import { onlyPrivate, uploadAvatar } from "../middlewares";
 
@@ -18,7 +19,8 @@ userRouter.post(
   postEditProfile
 );
 
-userRouter.get(routers.changePassword, onlyPrivate, changePassword);
+userRouter.get(routers.changePassword, onlyPrivate, getChangePassword);
+userRouter.post(routers.changePassword, onlyPrivate, postChangePassword);
 
 userRouter.get(routers.userDetail(), userDetail);
 
