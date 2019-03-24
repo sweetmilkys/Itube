@@ -3,7 +3,7 @@ import routers from "./routers";
 
 const multerVideo = multer({ dest: "uploads/videos/" });
 
-const multerAvatar = multer({ dest: "uploads.avatars/" });
+const multerAvatar = multer({ dest: "uploads/avatars/" });
 
 export const localsMiddleware = (req, res, next) => {
   res.locals.siteName = "WeTube";
