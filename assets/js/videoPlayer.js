@@ -14,13 +14,20 @@ const registerView = () => {
   });
 };
 
-function handlePlayClick() {
+function handlePlayStateChange() {
   if (videoPlayer.paused) {
-    videoPlayer.play();
     playBtn.innerHTML = '<i class="fas fa-pause"></i>';
   } else {
-    videoPlayer.pause();
     playBtn.innerHTML = '<i class="fas fa-play"></i>';
+  }
+}
+
+function handlePlayClick() {
+  handlePlayStateChange();
+  if (videoPlayer.paused) {
+    videoPlayer.play();
+  } else {
+    videoPlayer.pause();
   }
 }
 
@@ -113,7 +120,7 @@ function handleEnded() {
 function handleDrag(e) {
   const {
     target: { value }
-  } = event;
+  } = e;
   videoPlayer.volume = value;
   if (value >= 0.6) {
     volumeBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
@@ -126,6 +133,7 @@ function handleDrag(e) {
 
 function init() {
   videoPlayer.volume = 0.5;
+  handlePlayStateChange();
   playBtn.addEventListener("click", handlePlayClick);
   volumeBtn.addEventListener("click", handleVolumeClick);
   fullScreenBtn.addEventListener("click", goFullScreen);
