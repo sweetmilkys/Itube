@@ -126,7 +126,7 @@ export const postRegisterView = async (req, res) => {
   }
 };
 
-// Ad Comment
+// Add Comment
 export const postAddComment = async (req, res) => {
   const {
     params: { id },

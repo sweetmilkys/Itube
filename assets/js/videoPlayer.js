@@ -16,19 +16,23 @@ const registerView = () => {
 
 function handlePlayStateChange() {
   if (videoPlayer.paused) {
-    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-  } else {
     playBtn.innerHTML = '<i class="fas fa-play"></i>';
+  } else {
+    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
   }
 }
 
+function handleScreenStateChange() {
+  console.log(document.fullscreenElement);
+}
+
 function handlePlayClick() {
-  handlePlayStateChange();
   if (videoPlayer.paused) {
     videoPlayer.play();
   } else {
     videoPlayer.pause();
   }
+  handlePlayStateChange();
 }
 
 function handleVolumeClick() {
@@ -64,6 +68,8 @@ function exitFullScreen() {
 }
 
 function goFullScreen() {
+  console.log("전");
+  console.log(videoContainer);
   if (videoContainer.requestFullscreen) {
     videoContainer.requestFullscreen();
   } else if (videoContainer.mozRequestFullScreen) {
@@ -76,6 +82,8 @@ function goFullScreen() {
   fullScreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
   fullScreenBtn.removeEventListener("click", goFullScreen);
   fullScreenBtn.addEventListener("click", exitFullScreen);
+  console.log("후");
+  console.log(videoContainer);
 }
 
 const formatDate = seconds => {
@@ -133,6 +141,7 @@ function handleDrag(e) {
 
 function init() {
   videoPlayer.volume = 0.5;
+  videoPlayer.play();
   handlePlayStateChange();
   playBtn.addEventListener("click", handlePlayClick);
   volumeBtn.addEventListener("click", handleVolumeClick);
