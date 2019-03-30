@@ -15,15 +15,12 @@ const registerView = () => {
 };
 
 function handlePlayStateChange() {
+  console.log("?");
   if (videoPlayer.paused) {
     playBtn.innerHTML = '<i class="fas fa-play"></i>';
   } else {
     playBtn.innerHTML = '<i class="fas fa-pause"></i>';
   }
-}
-
-function handleScreenStateChange() {
-  console.log(document.fullscreenElement);
 }
 
 function handlePlayClick() {
@@ -54,8 +51,6 @@ function handleVolumeClick() {
 }
 
 function exitFullScreen() {
-  fullScreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
-  fullScreenBtn.addEventListener("click", goFullScreen);
   if (document.exitFullscreen) {
     document.exitFullscreen();
   } else if (document.mozCancelFullScreen) {
@@ -65,11 +60,11 @@ function exitFullScreen() {
   } else if (document.msExitFullscreen) {
     document.msExitFullscreen();
   }
+  fullScreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+  fullScreenBtn.addEventListener("click", goFullScreen);
 }
 
 function goFullScreen() {
-  console.log("전");
-  console.log(videoContainer);
   if (videoContainer.requestFullscreen) {
     videoContainer.requestFullscreen();
   } else if (videoContainer.mozRequestFullScreen) {
@@ -82,8 +77,19 @@ function goFullScreen() {
   fullScreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
   fullScreenBtn.removeEventListener("click", goFullScreen);
   fullScreenBtn.addEventListener("click", exitFullScreen);
-  console.log("후");
-  console.log(videoContainer);
+}
+
+function handleScreenStateChange() {
+  if (
+    !document.fullscreenElement &&
+    !document.webkitIsFullScreen &&
+    !document.mozFullScreen &&
+    !document.msFullscreenElement
+  ) {
+    fullScreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+    fullScreenBtn.removeEventListener("click", exitFullScreen);
+    fullScreenBtn.addEventListener("click", goFullScreen);
+  }
 }
 
 const formatDate = seconds => {
@@ -141,11 +147,23 @@ function handleDrag(e) {
 
 function init() {
   videoPlayer.volume = 0.5;
-  videoPlayer.play();
-  handlePlayStateChange();
   playBtn.addEventListener("click", handlePlayClick);
+  videoPlayer.addEventListener("playing", handlePlayStateChange);
   volumeBtn.addEventListener("click", handleVolumeClick);
   fullScreenBtn.addEventListener("click", goFullScreen);
+  videoContainer.addEventListener("fullscreenchange", handleScreenStateChange);
+  videoContainer.addEventListener(
+    "webkitfullscreenchange",
+    handleScreenStateChange
+  );
+  videoContainer.addEventListener(
+    "mozfullscreenchange",
+    handleScreenStateChange
+  );
+  videoContainer.addEventListener(
+    "MSFullscreenChange",
+    handleScreenStateChange
+  );
   videoPlayer.addEventListener("loadedmetadata", setTotalTime);
   videoPlayer.addEventListener("ended", handleEnded);
   volumeRange.addEventListener("input", handleDrag);
