@@ -20,6 +20,9 @@
     .video__description {
       display: block;
       margin-bottom: 15px;
+      #jsVideoViews {
+        margin-right: 5px;
+      }
     }
     .video__title {
       font-size: 22px;
@@ -43,6 +46,19 @@
       width: 100%;
       input {
         width: 100%;
+      }
+    }
+    .video__comments-list {
+      margin-top: 50px;
+      li {
+        background-color: #3498db;
+        color: white;
+        padding: 15px;
+        border-radius: 20px;
+        border-bottom-left-radius: 0px;
+        &:not(:last-child) {
+          margin-bottom: 15px;
+        }
       }
     }
   }

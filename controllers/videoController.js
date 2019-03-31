@@ -1,7 +1,8 @@
 import routers from "../routers";
 import Video from "../models/Video";
+import Comment from "../models/Comment";
 
-//
+// Home
 export const home = async (req, res) => {
   try {
     const videos = await Video.find({}).sort({ _id: -1 });
@@ -12,6 +13,7 @@ export const home = async (req, res) => {
   }
 };
 
+// search
 export const search = async (req, res) => {
   console.log(req.body.query);
   const {
@@ -29,6 +31,7 @@ export const search = async (req, res) => {
   res.render("search", { pageTitle: "Search", searchingBy, videos });
 };
 
+// Upload
 export const getUpload = (req, res) =>
   res.render("upload", { pageTitle: "Upload" });
 
@@ -48,12 +51,15 @@ export const postUpload = async (req, res) => {
   res.redirect(routers.videoDetail(newVideo.id));
 };
 
+// Video Detail
 export const videoDetail = async (req, res) => {
   const {
     params: { id }
   } = req;
   try {
-    const video = await Video.findById(id).populate("creator");
+    const video = await Video.findById(id)
+      .populate("creator")
+      .populate("comments");
     res.render("videoDetail", { pageTitle: "Video Detail", video });
   } catch (error) {
     console.log(error);
@@ -61,6 +67,25 @@ export const videoDetail = async (req, res) => {
   }
 };
 
+// Register Video View
+export const postRegisterView = async (req, res) => {
+  const {
+    params: { id }
+  } = req;
+  try {
+    const video = await Video.findById(id);
+    video.views += 1;
+    video.save();
+    res.status(200);
+  } catch (error) {
+    console.log(error);
+    res.status(400);
+  } finally {
+    res.end();
+  }
+};
+
+// Edit video
 export const getEditVideo = async (req, res) => {
   const {
     params: { id }
@@ -92,6 +117,7 @@ export const postEditVideo = async (req, res) => {
   }
 };
 
+// delete Video
 export const deleteVideo = async (req, res) => {
   const {
     params: { id }
@@ -109,25 +135,11 @@ export const deleteVideo = async (req, res) => {
   res.redirect(routers.home);
 };
 
-export const postRegisterView = async (req, res) => {
-  const {
-    params: { id }
-  } = req;
-  try {
-    const video = await Video.findById(id);
-    video.views += 1;
-    video.save();
-    res.status(200);
-  } catch (error) {
-    console.log(error);
-    res.status(400);
-  } finally {
-    res.end();
-  }
-};
-
 // Add Comment
 export const postAddComment = async (req, res) => {
+  console.log("2222");
+  console.log(req.user);
+  console.log("11111");
   const {
     params: { id },
     body: { comment },
@@ -139,7 +151,7 @@ export const postAddComment = async (req, res) => {
       text: comment,
       creator: user.id
     });
-    video.comments.push(newComment._id);
+    video.comments.push(newComment.id);
     video.save();
   } catch (error) {
     console.log(error);

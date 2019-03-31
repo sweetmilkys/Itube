@@ -6,21 +6,22 @@ const fullScreenBtn = document.getElementById("jsFullScreenBtn");
 const currentTime = document.getElementById("currentTime");
 const totalTime = document.getElementById("totalTime");
 const volumeRange = document.getElementById("jsVolume");
+const videoViews = document.getElementById("jsVideoViews");
 
-const registerView = () => {
+const registerView = async () => {
   const videoId = window.location.href.split("/videos/")[1];
-  fetch(`/api/${videoId}/view`, {
+  const response = await fetch(`/api/${videoId}/view`, {
     method: "POST"
   });
+  if (response.status === 200) {
+    videoViews.innerHTML = parseInt(videoViews.innerHTML, 10) + 1;
+  }
 };
 
 function handlePlayStateChange() {
-  console.log("?");
-  if (videoPlayer.paused) {
-    playBtn.innerHTML = '<i class="fas fa-play"></i>';
-  } else {
-    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-  }
+  playBtn.innerHTML = videoPlayer.paused
+    ? '<i class="fas fa-play"></i>'
+    : '<i class="fas fa-pause"></i>';
 }
 
 function handlePlayClick() {
@@ -47,6 +48,58 @@ function handleVolumeClick() {
     volumeRange.value = 0;
     videoPlayer.muted = true;
     volumeBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+  }
+}
+
+const formatDate = seconds => {
+  const secondsNumber = parseInt(seconds, 10);
+  let hours = Math.floor(secondsNumber / 3600);
+  let minutes = Math.floor((secondsNumber - hours * 3600) / 60);
+  let totalSeconds = secondsNumber - hours * 3600 - minutes * 60;
+
+  if (hours < 10) {
+    hours = `0${hours}`;
+  }
+  if (minutes < 10) {
+    minutes = `0${minutes}`;
+  }
+  if (totalSeconds < 10) {
+    totalSeconds = `0${totalSeconds}`;
+  }
+  return `${hours}:${minutes}:${totalSeconds}`;
+};
+
+let interval = null;
+
+function getCurrentTime() {
+  currentTime.innerHTML = formatDate(Math.floor(videoPlayer.currentTime));
+  if (currentTime.innerHTML === totalTime.innerHTML) {
+    clearInterval(interval);
+  }
+}
+
+function setTotalTime() {
+  const totalTimeString = formatDate(videoPlayer.duration);
+  totalTime.innerHTML = totalTimeString;
+  interval = setInterval(getCurrentTime, 1000);
+}
+
+function handleEnded() {
+  videoPlayer.currentTime = 0;
+  playBtn.innerHTML = '<i class="fas fa-play"></i>';
+}
+
+function handleDrag(event) {
+  const {
+    target: { value }
+  } = event;
+  videoPlayer.volume = value;
+  if (value >= 0.6) {
+    volumeBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+  } else if (value >= 0.2) {
+    volumeBtn.innerHTML = '<i class="fas fa-volume-down"></i>';
+  } else {
+    volumeBtn.innerHTML = '<i class="fas fa-volume-off"></i>';
   }
 }
 
@@ -92,60 +145,8 @@ function handleScreenStateChange() {
   }
 }
 
-const formatDate = seconds => {
-  const secondsNumber = parseInt(seconds, 10);
-  let hours = Math.floor(secondsNumber / 3600);
-  let minutes = Math.floor((secondsNumber - hours * 3600) / 60);
-  let totalSeconds = secondsNumber - hours * 3600 - minutes * 60;
-
-  if (hours < 10) {
-    hours = `0${hours}`;
-  }
-  if (minutes < 10) {
-    minutes = `0${minutes}`;
-  }
-  if (totalSeconds < 10) {
-    totalSeconds = `0${totalSeconds}`;
-  }
-  return `${hours}:${minutes}:${totalSeconds}`;
-};
-
-let interval = null;
-
-function getCurrentTime() {
-  currentTime.innerHTML = formatDate(Math.floor(videoPlayer.currentTime));
-  if (currentTime.innerHTML === totalTime.innerHTML) {
-    clearInterval(interval);
-  }
-}
-
-function setTotalTime() {
-  const totalTimeString = formatDate(videoPlayer.duration);
-  totalTime.innerHTML = totalTimeString;
-  interval = setInterval(getCurrentTime, 1000);
-}
-
-function handleEnded() {
-  registerView();
-  videoPlayer.currentTime = 0;
-  playBtn.innerHTML = '<i class="fas fa-play"></i>';
-}
-
-function handleDrag(e) {
-  const {
-    target: { value }
-  } = e;
-  videoPlayer.volume = value;
-  if (value >= 0.6) {
-    volumeBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-  } else if (value >= 0.2) {
-    volumeBtn.innerHTML = '<i class="fas fa-volume-down"></i>';
-  } else {
-    volumeBtn.innerHTML = '<i class="fas fa-volume-off"></i>';
-  }
-}
-
 function init() {
+  registerView();
   videoPlayer.volume = 0.5;
   playBtn.addEventListener("click", handlePlayClick);
   videoPlayer.addEventListener("playing", handlePlayStateChange);
