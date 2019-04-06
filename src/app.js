@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import passport from "passport";
 import mongoes from "mongoose";
 import session from "express-session";
+import flash from "express-flash";
 import path from "path";
 import mongoStore from "connect-mongo";
 import { localsMiddleware } from "./middlewares";
@@ -35,10 +36,12 @@ app.use(
   session({
     secret: process.env.COOKIE_SECRET,
     resave: true,
-    saveUninitialized: false,
+    saveUninitialized: true,
     store: new CokieStore({ mongooseConnection: mongoes.connection })
   })
 );
+app.use(flash());
+
 // https://randomkeygen.com/
 app.use(passport.initialize());
 app.use(passport.session());

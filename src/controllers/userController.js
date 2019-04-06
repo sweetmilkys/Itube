@@ -9,7 +9,8 @@ export const postJoin = async (req, res, next) => {
     body: { name, email, password, password2 }
   } = req;
   if (password !== password2) {
-    res.status(400);
+    req.flash("info", "비밀번호가 일치하지 않습니다.");
+    res.redirect(routers.join);
   } else {
     try {
       const user = await User({
@@ -29,6 +30,7 @@ export const getlogin = (req, res) =>
   res.render("login", { pageTitle: "Log In" });
 
 export const postLogin = passport.authenticate("local", {
+  failureFlash: "이메일 혹은 비밀번호를 확인해주시기 바랍니다.",
   failureRedirect: routers.login,
   successRedirect: routers.home
 });
@@ -63,6 +65,7 @@ export const googleLogin = passport.authenticate("google", {
 });
 
 export const googleCallback = passport.authenticate("google", {
+  failureFlash: "이메일 혹은 비밀번호를 확인해주시기 바랍니다.",
   failureRedirect: routers.login
 });
 
@@ -98,6 +101,7 @@ export const kakaoLoginCallback = async (_, __, profile, done) => {
 export const kakaoLogin = passport.authenticate("kakao");
 
 export const kakoCallback = passport.authenticate("kakao", {
+  failureFlash: "이메일 혹은 비밀번호를 확인해주시기 바랍니다.",
   failureRedirect: routers.login
 });
 
@@ -129,6 +133,7 @@ export const naverLoginCallback = async (_, __, profile, done) => {
 export const naverLogin = passport.authenticate("naver");
 
 export const naverCallback = passport.authenticate("naver", {
+  failureFlash: "이메일 혹은 비밀번호를 확인해주시기 바랍니다.",
   failureRedirect: routers.login
 });
 
@@ -162,6 +167,7 @@ export const facebookLoginCallback = async (_, __, profile, cb) => {
 export const facebookLogin = passport.authenticate("facebook");
 
 export const facebookCallback = passport.authenticate("facebook", {
+  failureFlash: "이메일 혹은 비밀번호를 확인해주시기 바랍니다.",
   failureRedirect: routers.login
 });
 
@@ -195,6 +201,7 @@ export const githubLogin = passport.authenticate("github", {
 });
 
 export const githubCallback = passport.authenticate("github", {
+  failureFlash: "이메일 혹은 비밀번호를 확인해주시기 바랍니다.",
   failureRedirect: routers.login
 });
 export const socialPostLogin = (req, res) => res.redirect(routers.home);
@@ -212,6 +219,7 @@ export const userDetail = async (req, res) => {
     res.render("userDetail", { pageTitle: "User Detail", user });
   } catch (error) {
     console.log(error);
+    req.flash("error", "사용자를 찾을 수 없습니다.");
     res.redirect(routers.home);
   }
 };
@@ -235,6 +243,7 @@ export const postEditProfile = async (req, res) => {
     res.redirect(routers.me);
   } catch (error) {
     console.log(error);
+    req.flash("error", "업데이트에 실패했습니다.");
     res.redirect(routers.editProfile);
   }
 };
@@ -248,6 +257,7 @@ export const postChangePassword = async (req, res) => {
   } = req;
   try {
     if (newPassword !== newPassword1) {
+      req.flash("error", "비밀번호가 일치하지 않습니다.");
       res.status(400);
       res.redirect(`/users/${routers.changePassword}`);
       return;
@@ -256,12 +266,14 @@ export const postChangePassword = async (req, res) => {
     res.redirect(routers.me);
   } catch (error) {
     console.log(error);
+    req.flash("error", "비밀번호 변경에 실패 했습니다.");
     res.status(400);
     res.redirect(`/users/${routers.changePassword}`);
   }
 };
 
 export const logout = (req, res) => {
+  req.flash("info", "로그아웃되었습니다.");
   req.logout();
   res.redirect(routers.home);
 };

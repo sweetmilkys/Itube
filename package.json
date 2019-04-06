@@ -12,7 +12,7 @@
     "build": "npm run build:server && npm run build:assets && npm run copyAll",
     "prebuild": "rm -rf build",
     "tunnel": "lt --port 4000",
-    "start": "PRODUCTION=truegit push origin node build/init.js",
+    "start": "PRODUCTION=true node build/init.js",
     "prestart": "npm run build"
   },
   "dependencies": {
@@ -32,8 +32,10 @@
     "css-loader": "^2.1.1",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
+    "express-flash": "0.0.2",
     "express-session": "^1.15.6",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "flash": "^1.1.0",
     "get-blob-duration": "^1.0.1",
     "helmet": "^3.15.1",
     "mongoose": "^5.4.16",
