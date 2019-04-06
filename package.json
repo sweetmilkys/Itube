@@ -12,9 +12,11 @@
     "build": "npm run build:server && npm run build:assets && npm run copyAll",
     "prebuild": "rm -rf build",
     "tunnel": "lt --port 4000",
-    "start": "node build/init.js"
+    "start": "PRODUCTION=true node build/init.js",
+    "prestart": "npm run build"
   },
   "dependencies": {
+    "@babel/cli": "^7.4.3",
     "@babel/core": "^7.3.3",
     "@babel/node": "^7.2.2",
     "@babel/polyfill": "^7.2.5",
